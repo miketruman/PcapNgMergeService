@@ -79,13 +79,17 @@ int main(int argc, char **argv)
                 boost::filesystem::remove(current_file);
                 addDelay = false;
             }
-            if(count > mergeCount)
+            if(count == mergeCount)
             {
                 std::cout << "BREAK" << std::endl;
                 break;
             }
-
         }
+        if(count < mergeCount)
+	{
+		std::cout << "only(" << count << ") file merged" << std::endl;
+            	sleep(1);
+	}
         pcapNgWriter.close();
         boost::filesystem::rename(tmpFile,closeFile);
         std::cout << "closeFile=" << closeFile << std::endl;
