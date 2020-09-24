@@ -1,0 +1,10 @@
+version: '3.3'
+services:
+  pcapngmerge:
+    build: .
+    volumes:
+    - /input/:/input/
+    - /output/:/output/
+    environment:
+      test: test
+

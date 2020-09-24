@@ -36,8 +36,8 @@ using namespace boost::posix_time;
 
 int main(int argc, char **argv)
 {
-    boost::filesystem::create_directory("input/");
-    boost::filesystem::create_directory("output/");
+    boost::filesystem::create_directory("/input/");
+    boost::filesystem::create_directory("/output/");
 
     while(true)
     {
@@ -49,12 +49,12 @@ int main(int argc, char **argv)
         ptime now_2 = microsec_clock::universal_time();
         std::string outFilename(std::string(to_iso_string(now_2)) + ".pcapng");
 
-        std::string tmpFile("output/." + outFilename);
-        std::string closeFile("output/" + outFilename);
+        std::string tmpFile("/output/." + outFilename);
+        std::string closeFile("/output/" + outFilename);
         pcpp::PcapNgFileWriterDevice pcapNgWriter(tmpFile.c_str());
         pcapNgWriter.open();
 
-        boost::filesystem::path p ("input/");
+        boost::filesystem::path p ("/input/");
 
 
         boost::filesystem::directory_iterator end_itr;
