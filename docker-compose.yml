@@ -6,6 +6,5 @@ services:
     volumes:
     - /input/:/input/
     - /output/:/output/
-    environment:
-      test: test
+    command: /build/a.bin -m 2
 

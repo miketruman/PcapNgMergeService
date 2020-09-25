@@ -9,11 +9,15 @@
 int main(int argc, char **argv)
 {
     size_t mergeCount(50);
+    size_t penalty(1);
+    size_t yield(10);
 
     boost::program_options::options_description desc("Allowed options");
     desc.add_options()
     ("help,h", "print usage message")
     ("mergecount,m", boost::program_options::value(&mergeCount), "number of files to merge before creating new file")
+    ("penalty,p", boost::program_options::value(&penalty), "Penalty duration when less then mergecount was found")
+    ("yield,y", boost::program_options::value(&yield), "yield duration when no files where found")
     ;
 
     boost::program_options::variables_map vm;
@@ -25,10 +29,18 @@ int main(int argc, char **argv)
     }
 
     if (vm.count("mergecount")) {
-	mergeCount =  vm["mergecount"].as<size_t>();
+        mergeCount =  vm["mergecount"].as<size_t>();
+    }
+    if (vm.count("penalty")) {
+        penalty =  vm["penalty"].as<size_t>();
+    }
+    if (vm.count("yield")) {
+        yield =  vm["yield"].as<size_t>();
     }
     std::cout << "STARTING #########################################" << std::endl;
     std::cout << "mergeCount=" << mergeCount << std::endl;
+    std::cout << "penalty=" << penalty << std::endl;
+    std::cout << "yield=" << yield << std::endl;
 
     boost::filesystem::create_directory("/input/");
     boost::filesystem::create_directory("/input/failed/");
@@ -100,15 +112,16 @@ int main(int argc, char **argv)
         }
         pcapNgWriter.close();
         boost::filesystem::rename(tmpFile,closeFile);
-        if(count < mergeCount)
+        if(count && count < mergeCount)
         {
-            std::cout << "only(" << count << ") file merged" << std::endl;
-            sleep(1);
+            std::cout << "only(" << count << ") file merged. Penalty time:" << penalty << std::endl;
+            sleep(penalty);
         }
         std::cout << "closeFile=" << closeFile << std::endl;
         if(addDelay)
         {
-            sleep(10);
+            std::cout << "No input files found. yield for:" << yield << "sec" << std::endl;
+            sleep(yield);
         }
     }
 }
