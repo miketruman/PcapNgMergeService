@@ -2,6 +2,7 @@ version: '3.3'
 services:
   pcapngmerge:
     build: .
+    image: miketruman/pcapngmergeservice:latest
     volumes:
     - /input/:/input/
     - /output/:/output/
