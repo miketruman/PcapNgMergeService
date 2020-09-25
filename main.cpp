@@ -1,38 +1,8 @@
-#include <cstdlib>
-#include <list>
-#include <cstring>
-#include <stdint.h>
-#include <iterator>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <boost/lexical_cast.hpp>
 #include <boost/program_options.hpp>
-#include <boost/regex.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/filesystem.hpp>
-#include <boost/foreach.hpp>
-#include <iostream>
 #include "boost/filesystem.hpp"
-#include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-
-#include <new>
-#include <set>
-#include <time.h>
-#include <string>
-#include <vector>
-#include <stdexcept>
-#include <iostream>
-#include <cstdlib>
-#include <arpa/inet.h>
-
-#include "pcapplusplus/IPv4Layer.h"
 #include "pcapplusplus/Packet.h"
 #include "pcapplusplus/PcapFileDevice.h"
-#include "pcapplusplus/PacketUtils.h"
-
-using namespace boost::posix_time;
 
 int main(int argc, char **argv)
 {
@@ -47,8 +17,8 @@ int main(int argc, char **argv)
 
         size_t mergeCount(50);
 
-        ptime now_2 = microsec_clock::universal_time();
-        std::string outFilename(std::string(to_iso_string(now_2)) + ".pcapng");
+        boost::posix_time::ptime now_2 = boost::posix_time::microsec_clock::universal_time();
+        std::string outFilename(boost::posix_time::to_iso_string(now_2) + ".pcapng");
 
         std::string tmpFile("/output/." + outFilename);
         std::string closeFile("/output/" + outFilename);
@@ -67,7 +37,6 @@ int main(int argc, char **argv)
                 std::string current_file = itr->path().string();
                 std::cout << current_file << std::endl;
 
-                //pcpp::PcapFileReaderDevice pcapReader(current_file.c_str());
                 pcpp::IFileReaderDevice* reader = pcpp::IFileReaderDevice::getReader(current_file.c_str());
                 if(reader && reader->open())
                 {
